@@ -1,11 +1,11 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
   },
   module: {
     rules: [
@@ -13,9 +13,12 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', ['@babel/preset-react', { pragma: 'h' }]],
+            presets: [
+              "@babel/preset-env",
+              ["@babel/preset-react", { pragma: "h" }],
+            ],
           },
         },
       },
@@ -23,24 +26,28 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: "./src/index.html",
     }),
   ],
   resolve: {
     alias: {
-      react: 'preact/compat',
-      'react-dom': 'preact/compat',
+      react: "preact/compat",
+      "react-dom": "preact/compat",
     },
   },
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    compress: true,
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
     port: 9000,
-    hot: true,
     open: true,
-    host: '0.0.0.0',
-    disableHostCheck: true,
-    useLocalIp: true,
-    public: 'localhost:9000'
-  }
+    host: "0.0.0.0",
+    allowedHosts: "all",
+    client: {
+      webSocketURL: "auto://0.0.0.0:0/ws",
+    },
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  },
 };
